@@ -56,13 +56,21 @@ class FPSCounter extends TextField
 		multiline = true;
 		text = "FPS: ";
 
+		#if flash
+                addEventListener(openfl.events.Event.ENTER_FRAME, function(e)
+                {
+                        var time = openfl.Lib.getTimer();
+                        __enterFrame(time - times[0]);
+                });
+                #end
+
 		times = [];
 	}
 
 	var deltaTimeout:Float = 0.0;
 
 	// Event Handlers
-	private override function __enterFrame(deltaTime:Float):Void
+	private #if !flash override #end function __enterFrame(deltaTime:Float):Void
 	{
 		// prevents the overlay from updating every frame, why would you need to anyways
 		if (deltaTimeout > 1000) {
@@ -79,7 +87,7 @@ class FPSCounter extends TextField
 		deltaTimeout += deltaTime;
 	}
 
-	public dynamic function updateText():Void // so people can override it in hscript
+	#if !flash public dynamic #end function updateText():Void // so people can override it in hscript
 	{
 		text = 
 		'FPS: $currentFPS' + 

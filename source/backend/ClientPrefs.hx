@@ -7,7 +7,7 @@ import flixel.input.gamepad.FlxGamepadInputID;
 import states.TitleState;
 
 // Add a variable here and it will get automatically saved
-@:structInit class SaveVariables {
+class SaveVariables {
 	// Mobile and Mobile Controls Releated
 	public var extraButtons:String = "NONE"; // mobile extra button option
 	public var hitboxPos:Bool = true; // hitbox extra button position option
@@ -90,11 +90,13 @@ import states.TitleState;
 	public var safeFrames:Float = 10;
 	public var guitarHeroSustains:Bool = true;
 	public var discordRPC:Bool = true;
+
+	public function new() {}
 }
 
 class ClientPrefs {
-	public static var data:SaveVariables = {};
-	public static var defaultData:SaveVariables = {};
+	public static var data:SaveVariables = new SaveVariables();
+	public static var defaultData:SaveVariables = new SaveVariables();
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -190,28 +192,91 @@ class ClientPrefs {
 	}
 
 	public static function saveSettings() {
-		for (key in Reflect.fields(data))
-			Reflect.setField(FlxG.save.data, key, Reflect.field(data, key));
+		//for (key in Reflect.fields(data))
+			//Reflect.setField(FlxG.save.data, key, Reflect.field(data, key));
 
 		#if ACHIEVEMENTS_ALLOWED Achievements.save(); #end
-		FlxG.save.flush();
+		//FlxG.save.flush();
 
 		//Placing this in a separate save so that it can be manually deleted without removing your Score and stuff
-		var save:FlxSave = new FlxSave();
+		/*var save:FlxSave = new FlxSave();
 		save.bind('controls_v3', CoolUtil.getSavePath());
 		save.data.keyboard = keyBinds;
 		save.data.gamepad = gamepadBinds;
 		save.data.mobile = mobileBinds;
-		save.flush();
+		save.flush();*/
 		FlxG.log.add("Settings saved!");
 	}
 
 	public static function loadPrefs() {
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
 
-		for (key in Reflect.fields(data))
-			if (key != 'gameplaySettings' && Reflect.hasField(FlxG.save.data, key))
-				Reflect.setField(data, key, Reflect.field(FlxG.save.data, key));
+/*FlxG.save.data.extraButtons = "NONE";
+FlxG.save.data.hitboxPos = true;
+FlxG.save.data.dynamicColors = true;
+FlxG.save.data.controlsAlpha = 0;
+FlxG.save.data.screensaver = false;
+FlxG.save.data.wideScreen = false;
+
+#if android
+FlxG.save.data.storageType = "EXTERNAL_DATA";
+#end
+
+FlxG.save.data.hitboxType = "Gradient";
+FlxG.save.data.popUpRating = true;
+FlxG.save.data.vsync = false;
+FlxG.save.data.gameOverVibration = false;
+
+FlxG.save.data.downScroll = false;
+FlxG.save.data.middleScroll = false;
+FlxG.save.data.opponentStrums = true;
+FlxG.save.data.showFPS = true;
+FlxG.save.data.flashing = true;
+FlxG.save.data.autoPause = true;
+FlxG.save.data.antialiasing = true;
+FlxG.save.data.noteSkin = "Default";
+FlxG.save.data.splashSkin = "Psych";
+FlxG.save.data.splashAlpha = 0.6;
+FlxG.save.data.lowQuality = false;
+FlxG.save.data.shaders = true;
+FlxG.save.data.cacheOnGPU = #if !switch false #else true #end;
+FlxG.save.data.framerate = 60;
+FlxG.save.data.camZooms = true;
+FlxG.save.data.hideHud = false;
+FlxG.save.data.noteOffset = 0;
+
+FlxG.save.data.arrowRGB = [
+    [0xFFC24B99, 0xFFFFFFFF, 0xFF3C1F56],
+    [0xFF00FFFF, 0xFFFFFFFF, 0xFF1542B7],
+    [0xFF12FA05, 0xFFFFFFFF, 0xFF0A4447],
+    [0xFFF9393F, 0xFFFFFFFF, 0xFF651038]
+];
+
+FlxG.save.data.arrowRGBPixel = [
+    [0xFFE276FF, 0xFFFFF9FF, 0xFF60008D],
+    [0xFF3DCAFF, 0xFFF4FFFF, 0xFF003060],
+    [0xFF71E300, 0xFFF6FFE6, 0xFF003100],
+    [0xFFFF884E, 0xFFFFFAF5, 0xFF6C0000]
+];
+
+FlxG.save.data.ghostTapping = true;
+FlxG.save.data.timeBarType = "Time Left";
+FlxG.save.data.scoreZoom = true;
+FlxG.save.data.noReset = false;
+FlxG.save.data.healthBarAlpha = 1;
+FlxG.save.data.hitsoundVolume = 0;
+FlxG.save.data.pauseMusic = "Tea Time";
+FlxG.save.data.checkForUpdates = true;
+FlxG.save.data.comboStacking = true;
+
+FlxG.save.data.comboOffset = [0, 0, 0, 0];
+FlxG.save.data.ratingOffset = 0;
+FlxG.save.data.sickWindow = 45;
+FlxG.save.data.goodWindow = 90;
+FlxG.save.data.badWindow = 135;
+FlxG.save.data.safeFrames = 10;
+FlxG.save.data.guitarHeroSustains = true;
+FlxG.save.data.discordRPC = true;*/
 		
 		if(Main.fpsVar != null)
 			Main.fpsVar.visible = data.showFPS;
@@ -219,10 +284,8 @@ class ClientPrefs {
 		#if (!html5 && !switch)
 		FlxG.autoPause = ClientPrefs.data.autoPause;
 
-		if(FlxG.save.data.framerate == null) {
-			final refreshRate:Int = FlxG.stage.application.window.displayMode.refreshRate;
-			data.framerate = Std.int(FlxMath.bound(refreshRate, 60, 240));
-		}
+		final refreshRate:Int = FlxG.stage.application.window.displayMode.refreshRate;
+		data.framerate = Std.int(FlxMath.bound(refreshRate, 60, 240));
 		#end
 
 		if(data.framerate > FlxG.drawFramerate)
@@ -236,7 +299,7 @@ class ClientPrefs {
 			FlxG.updateFramerate = data.framerate;
 		}
 
-		if(FlxG.save.data.gameplaySettings != null)
+		/*if(FlxG.save.data.gameplaySettings != null)
 		{
 			var savedMap:Map<String, Dynamic> = FlxG.save.data.gameplaySettings;
 			for (name => value in savedMap)
@@ -244,17 +307,17 @@ class ClientPrefs {
 		}
 		
 		// flixel automatically saves your volume!
-		if(FlxG.save.data.volume != null)
+		// if(FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;
-		if (FlxG.save.data.mute != null)
-			FlxG.sound.muted = FlxG.save.data.mute;
+		// if (FlxG.save.data.mute != null)
+			FlxG.sound.muted = FlxG.save.data.mute;*/
 
 		#if DISCORD_ALLOWED
 		DiscordClient.check();
 		#end
 
 		// controls on a separate save file
-		var save:FlxSave = new FlxSave();
+		/*var save:FlxSave = new FlxSave();
 		save.bind('controls_v3', CoolUtil.getSavePath());
 		if(save != null)
 		{
@@ -274,9 +337,9 @@ class ClientPrefs {
 				var loadedControls:Map<String, Array<MobileInputID>> = save.data.mobile;
 				for (control => keys in loadedControls)
 					if(mobileBinds.exists(control)) mobileBinds.set(control, keys);
-			}
+			}*/
 			reloadVolumeKeys();
-		}
+		//}
 	}
 
 	inline public static function getGameplaySetting(name:String, defaultValue:Dynamic = null, ?customDefaultValue:Bool = false):Dynamic

@@ -108,7 +108,7 @@ class Highscore
 
 	public static function load():Void
 	{
-		if (FlxG.save.data.weekScores != null)
+		/*if (FlxG.save.data.weekScores != null)
 		{
 			weekScores = FlxG.save.data.weekScores;
 		}
@@ -119,6 +119,6 @@ class Highscore
 		if (FlxG.save.data.songRating != null)
 		{
 			songRating = FlxG.save.data.songRating;
-		}
+		}*/
 	}
 }

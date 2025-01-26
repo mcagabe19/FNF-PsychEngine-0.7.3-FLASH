@@ -146,10 +146,10 @@ class TitleState extends MusicBeatState
 			MobileData.init();
 		}
 
-		if (FlxG.save.data.weekCompleted != null)
+		/*if (FlxG.save.data.weekCompleted != null)
 		{
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
-		}
+		}*/
 
 		FlxG.mouse.visible = false;
 		#if FREEPLAY
@@ -157,12 +157,12 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
-		if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
+		/*if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
 			controls.isInSubstate = false; //idfk what's wrong
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
 			MusicBeatState.switchState(new FlashingState());
-		} else {
+		} else */ {
 			if (initialized)
 				startIntro();
 			else
@@ -221,7 +221,7 @@ class TitleState extends MusicBeatState
 		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
 		gfDance.antialiasing = ClientPrefs.data.antialiasing;
 
-		var easterEgg:String = FlxG.save.data.psychDevsEasterEgg;
+		var easterEgg:String = ''; // FlxG.save.data.psychDevsEasterEgg;
 		if(easterEgg == null) easterEgg = ''; //html5 fix
 
 		switch(easterEgg.toUpperCase())
@@ -253,11 +253,13 @@ class TitleState extends MusicBeatState
 
 		add(gfDance);
 		add(logoBl);
+		#if !flash
 		if(swagShader != null)
 		{
 			gfDance.shader = swagShader.shader;
 			logoBl.shader = swagShader.shader;
 		}
+		#end
 
 		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
@@ -603,7 +605,7 @@ class TitleState extends MusicBeatState
 		{
 			if (playJingle) //Ignore deez
 			{
-				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
+				var easteregg:String = ''; //FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
 				easteregg = easteregg.toUpperCase();
 
@@ -659,7 +661,7 @@ class TitleState extends MusicBeatState
 				remove(credGroup);
 				FlxG.camera.flash(FlxColor.WHITE, 4);
 
-				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
+				var easteregg:String = ''; //FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
 				easteregg = easteregg.toUpperCase();
 				#if TITLE_SCREEN_EASTER_EGG

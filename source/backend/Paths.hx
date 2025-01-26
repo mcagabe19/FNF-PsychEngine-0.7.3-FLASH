@@ -24,7 +24,7 @@ import backend.Mods;
 
 class Paths
 {
-	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
+	inline public static var SOUND_EXT = #if (web || flash) "mp3" #else "ogg" #end;
 	inline public static var VIDEO_EXT = "mp4";
 
 	public static function excludeAsset(key:String) {

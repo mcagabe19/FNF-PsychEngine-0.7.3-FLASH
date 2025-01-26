@@ -28,8 +28,8 @@ class MusicBeatState extends FlxUIState
 
 	public function addTouchPad(DPad:String, Action:String)
 	{
-		touchPad = new TouchPad(DPad, Action);
-		add(touchPad);
+		//touchPad = new TouchPad(DPad, Action);
+		//add(touchPad);
 	}
 
 	public function removeTouchPad()
@@ -49,7 +49,7 @@ class MusicBeatState extends FlxUIState
 
 	public function addMobileControls(defaultDrawTarget:Bool = false):Void
 	{
-		var extraMode = MobileData.extraActions.get(ClientPrefs.data.extraButtons);
+		/*var extraMode = MobileData.extraActions.get(ClientPrefs.data.extraButtons);
 
 		switch (MobileData.mode)
 		{
@@ -70,7 +70,7 @@ class MusicBeatState extends FlxUIState
 
 		mobileControls.instance.cameras = [mobileControlsCam];
 		mobileControls.instance.visible = false;
-		add(mobileControls.instance);
+		add(mobileControls.instance);*/
 	}
 
 	public function removeMobileControls()

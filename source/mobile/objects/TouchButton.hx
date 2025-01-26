@@ -171,7 +171,7 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 
 	public var statusIndicatorType(default, set):StatusIndicators = ALPHA;
 
-	public var brightShader:ButtonBrightnessShader = new ButtonBrightnessShader();
+	#if !flash public var brightShader:ButtonBrightnessShader = new ButtonBrightnessShader(); #end
 
 	public var justReleased(get, never):Bool;
 	public var released(get, never):Bool;
@@ -205,8 +205,10 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	{
 		super(X, Y);
 
+		#if !flash
 		if (statusIndicatorType == BRIGHTNESS)
 			shader = brightShader;
+		#end
 
 		onUp = new TouchButtonEvent();
 		onDown = new TouchButtonEvent();
@@ -379,7 +381,9 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 			case ALPHA:
 				alpha = statusAlphas[status];
 			case BRIGHTNESS:
+				#if !flash
 				brightShader.brightness.value = [statusBrightness[status]];
+				#end
 			case NONE: // no balls
 		}
 	}
@@ -438,8 +442,10 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 
 		updateLabelPosition();
 
+		#if !flash
 		if (statusIndicatorType == BRIGHTNESS && label != null && brightShader != null)
 			label.shader = brightShader;
+		#end
 
 		return Value;
 	}
@@ -485,7 +491,9 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	{
 		if (_spriteLabel != null)
 			_spriteLabel.color = Value;
+		#if !flash
 		brightShader.color = Value;
+		#end
 		super.set_color(Value);
 		return Value;
 	}
@@ -525,6 +533,7 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 
 	function set_statusIndicatorType(Value:StatusIndicators)
 	{
+		#if !flash
 		if (Value == BRIGHTNESS)
 		{
 			shader = brightShader;
@@ -532,6 +541,7 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 				_spriteLabel.shader = brightShader;
 		}
 		else
+		#end
 		{
 			shader = null;
 			if (_spriteLabel != null)
@@ -611,6 +621,7 @@ private class TouchButtonEvent implements IFlxDestroyable
 	}
 }
 
+#if !flash
 class ButtonBrightnessShader extends FlxShader
 {
 	public var color(default, set):Null<FlxColor> = FlxColor.WHITE;
@@ -646,6 +657,7 @@ class ButtonBrightnessShader extends FlxShader
 		return color = laColor;
 	}
 }
+#end
 
 enum StatusIndicators
 {

@@ -83,7 +83,9 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
+#if !flash
 import shaders.flixel.system.FlxShader;
+#end
 
 using StringTools;
 #end

@@ -1,36 +1,39 @@
 package shaders;
 
 class ColorSwap {
-	public var shader(default, null):ColorSwapShader = new ColorSwapShader();
+	#if !flash public var shader(default, null):ColorSwapShader = new ColorSwapShader(); #end
 	public var hue(default, set):Float = 0;
 	public var saturation(default, set):Float = 0;
 	public var brightness(default, set):Float = 0;
 
 	private function set_hue(value:Float) {
 		hue = value;
-		shader.uTime.value[0] = hue;
+		#if !flash shader.uTime.value[0] = hue; #end
 		return hue;
 	}
 
 	private function set_saturation(value:Float) {
 		saturation = value;
-		shader.uTime.value[1] = saturation;
+		#if !flash shader.uTime.value[1] = saturation; #end
 		return saturation;
 	}
 
 	private function set_brightness(value:Float) {
 		brightness = value;
-		shader.uTime.value[2] = brightness;
+		#if !flash shader.uTime.value[2] = brightness; #end
 		return brightness;
 	}
 
 	public function new()
 	{
+		#if !flash
 		shader.uTime.value = [0, 0, 0];
 		shader.awesomeOutline.value = [false];
+		#end
 	}
 }
 
+#if !flash
 class ColorSwapShader extends FlxShader {
 	@:glFragmentSource('
 		varying float openfl_Alphav;
@@ -212,3 +215,4 @@ class ColorSwapShader extends FlxShader {
 		super();
 	}
 }
+#end

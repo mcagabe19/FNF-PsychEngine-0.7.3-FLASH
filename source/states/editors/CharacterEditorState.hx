@@ -23,9 +23,11 @@ import objects.Bar;
 class CharacterEditorState extends MusicBeatState
 {
 	var character:Character;
+	#if flxanimate
 	var ghost:FlxSprite;
 	var animateGhost:FlxAnimate;
 	var animateGhostImage:String;
+	#end
 	var cameraFollowPointer:FlxSprite;
 	var isAnimateSprite:Bool = false;
 
@@ -95,10 +97,12 @@ class CharacterEditorState extends MusicBeatState
 
 		silhouettes.alpha = 0.25;
 
+		#if flxanimate
 		ghost = new FlxSprite();
 		ghost.visible = false;
 		ghost.alpha = ghostAlpha;
 		add(ghost);
+		#end
 
 		addCharacter();
 
@@ -260,7 +264,9 @@ class CharacterEditorState extends MusicBeatState
 	function makeUIMenu()
 	{
 		var tabs = [
+			#if flxanimate
 			{name: 'Ghost', label: 'Ghost'},
+			#end
 			{name: 'Settings', label: 'Settings'}
 		];
 
@@ -286,7 +292,9 @@ class CharacterEditorState extends MusicBeatState
 		add(UI_characterbox);
 		add(UI_box);
 
+		#if flxanimate
 		addGhostUI();
+		#end
 		addSettingsUI();
 		addAnimationsUI();
 		addCharacterUI();
@@ -295,6 +303,7 @@ class CharacterEditorState extends MusicBeatState
 		UI_characterbox.selected_tab_id = 'Character';
 	}
 
+	#if flxanimate
 	var ghostAlpha:Float = 0.6;
 	function addGhostUI()
 	{
@@ -400,6 +409,7 @@ class CharacterEditorState extends MusicBeatState
 		tab_group.add(ghostAlphaSlider);
 		UI_box.addGroup(tab_group);
 	}
+	#end
 
 	var check_player:FlxUICheckBox;
 	var charDropDown:FlxUIDropDownMenu;
@@ -550,7 +560,7 @@ class CharacterEditorState extends MusicBeatState
 					if(character.animOffsets.exists(animationInputText.text))
 					{
 						if(!character.isAnimateAtlas) character.animation.remove(animationInputText.text);
-						else @:privateAccess character.atlas.anim.animsMap.remove(animationInputText.text);
+						#if flxanimate else @:privateAccess character.atlas.anim.animsMap.remove(animationInputText.text); #end
 					}
 					character.animationsArray.remove(anim);
 				}
@@ -578,7 +588,7 @@ class CharacterEditorState extends MusicBeatState
 					if(character.animOffsets.exists(anim.anim))
 					{
 						if(!character.isAnimateAtlas) character.animation.remove(anim.anim);
-						else @:privateAccess character.atlas.anim.animsMap.remove(anim.anim);
+						#if flxanimate else @:privateAccess character.atlas.anim.animsMap.remove(anim.anim); #end
 						character.animOffsets.remove(anim.anim);
 						character.animationsArray.remove(anim);
 					}
@@ -796,11 +806,12 @@ class CharacterEditorState extends MusicBeatState
 		var lastAnim:String = character.getAnimationName();
 		var anims:Array<AnimArray> = character.animationsArray.copy();
 
-		character.destroyAtlas();
+		#if flxanimate character.destroyAtlas(); #end
 		character.isAnimateAtlas = false;
 		character.color = FlxColor.WHITE;
 		character.alpha = 1;
-
+		
+		#if flxanimate
 		if(Paths.fileExists('images/' + character.imageFile + '/Animation.json', TEXT))
 		{
 			character.atlas = new FlxAnimate();
@@ -815,7 +826,7 @@ class CharacterEditorState extends MusicBeatState
 			}
 			character.isAnimateAtlas = true;
 		}
-		else if(Paths.fileExists('images/' + character.imageFile + '.txt', TEXT)) character.frames = Paths.getPackerAtlas(character.imageFile);
+		else #end if(Paths.fileExists('images/' + character.imageFile + '.txt', TEXT)) character.frames = Paths.getPackerAtlas(character.imageFile);
 		else if(Paths.fileExists('images/' + character.imageFile + '.json', TEXT)) character.frames = Paths.getAsepriteAtlas(character.imageFile);
 		else character.frames = Paths.getSparrowAtlas(character.imageFile);
 
@@ -1061,11 +1072,13 @@ class CharacterEditorState extends MusicBeatState
 				frames = character.animation.curAnim.curFrame;
 				length = character.animation.curAnim.numFrames;
 			}
+			#if flxanimate
 			else
 			{
 				frames = character.atlas.anim.curFrame;
 				length = character.atlas.anim.length;
 			}
+			#end
 
 			if(FlxG.keys.justPressed.A || FlxG.keys.justPressed.D || holdingFrameTime > 0.5)
 			{
@@ -1077,7 +1090,7 @@ class CharacterEditorState extends MusicBeatState
 				{
 					frames = FlxMath.wrap(frames + Std.int(isLeft ? -shiftMult : shiftMult), 0, length-1);
 					if(!character.isAnimateAtlas) character.animation.curAnim.curFrame = frames;
-					else character.atlas.anim.curFrame = frames;
+					#if flxanimate else character.atlas.anim.curFrame = frames; #end
 					holdingFrameElapsed -= 0.1;
 				}
 			}
@@ -1247,6 +1260,7 @@ class CharacterEditorState extends MusicBeatState
 			else
 				character.animation.addByPrefix(anim, name, fps, loop);
 		}
+		#if flxanimate
 		else
 		{
 			if(indices != null && indices.length > 0)
@@ -1254,6 +1268,7 @@ class CharacterEditorState extends MusicBeatState
 			else
 				character.atlas.anim.addBySymbol(anim, name, fps, loop);
 		}
+		#end
 
 		if(!character.animOffsets.exists(anim))
 			character.addOffset(anim, 0, 0);

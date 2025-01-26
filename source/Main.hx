@@ -78,7 +78,7 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-		#if mobile
+		#if (mobile && !flash)
 		#if android
 		StorageUtil.requestPermissions();
 		#end
@@ -190,10 +190,12 @@ class Main extends Sprite
 	}
 
 	static function resetSpriteCache(sprite:Sprite):Void {
+		#if !flash
 		@:privateAccess {
 		        sprite.__cacheBitmap = null;
 			sprite.__cacheBitmapData = null;
 		}
+		#end
 	}
 
 	function toggleFullScreen(event:KeyboardEvent){

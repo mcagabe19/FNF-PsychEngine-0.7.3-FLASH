@@ -132,8 +132,10 @@ class Tank extends BaseStage
 
 	// Cutscenes
 	var cutsceneHandler:CutsceneHandler;
+	#if flxanimate
 	var tankman:FlxAnimate;
 	var pico:FlxAnimate;
+	#end
 	var boyfriendCutscene:FlxSprite;
 	function prepareCutscene()
 	{
@@ -142,13 +144,15 @@ class Tank extends BaseStage
 		dadGroup.alpha = 0.00001;
 		camHUD.visible = false;
 		//inCutscene = true; //this would stop the camera movement, oops
-
+		
+		#if flxanimate
 		tankman = new FlxAnimate(dad.x + 419, dad.y + 225);
 		tankman.showPivot = false;
 		Paths.loadAnimateAtlas(tankman, 'cutscenes/tankman');
 		tankman.antialiasing = ClientPrefs.data.antialiasing;
 		addBehindDad(tankman);
 		cutsceneHandler.push(tankman);
+		#end
 
 		cutsceneHandler.finishCallback = function()
 		{
@@ -177,10 +181,12 @@ class Tank extends BaseStage
 
 		var wellWellWell:FlxSound = new FlxSound().loadEmbedded(Paths.sound('wellWellWell'));
 		FlxG.sound.list.add(wellWellWell);
-
+		
+		#if flxanimate
 		tankman.anim.addBySymbol('wellWell', 'TANK TALK 1 P1', 24, false);
 		tankman.anim.addBySymbol('killYou', 'TANK TALK 1 P2', 24, false);
 		tankman.anim.play('wellWell', true);
+		#end
 		FlxG.camera.zoom *= 1.2;
 
 		// Well well well, what do we got here?
@@ -211,7 +217,9 @@ class Tank extends BaseStage
 			camFollow.y -= 100;
 
 			// We should just kill you but... what the hell, it's been a boring day... let's see what you've got!
+			#if flxanimate
 			tankman.anim.play('killYou', true);
+			#end
 			FlxG.sound.play(Paths.sound('killYou'));
 		});
 	}
@@ -224,9 +232,11 @@ class Tank extends BaseStage
 
 		var tightBars:FlxSound = new FlxSound().loadEmbedded(Paths.sound('tankSong2'));
 		FlxG.sound.list.add(tightBars);
-
+		
+		#if flxanimate
 		tankman.anim.addBySymbol('tightBars', 'TANK TALK 2', 24, false);
 		tankman.anim.play('tightBars', true);
+		#end
 		boyfriend.animation.curAnim.finish();
 
 		cutsceneHandler.onStart = function()
@@ -261,7 +271,8 @@ class Tank extends BaseStage
 			spr.y += 100;
 		});
 		Paths.sound('stressCutscene');
-
+		
+		#if flxanimate
 		pico = new FlxAnimate(gf.x + 150, gf.y + 450);
 		pico.showPivot = false;
 		Paths.loadAnimateAtlas(pico, 'cutscenes/picoAppears');
@@ -273,6 +284,7 @@ class Tank extends BaseStage
 		pico.anim.play('dance', true);
 		addBehindGF(pico);
 		cutsceneHandler.push(pico);
+		#end
 
 		boyfriendCutscene = new FlxSprite(boyfriend.x + 5, boyfriend.y + 20);
 		boyfriendCutscene.antialiasing = ClientPrefs.data.antialiasing;
@@ -285,10 +297,12 @@ class Tank extends BaseStage
 
 		var cutsceneSnd:FlxSound = new FlxSound().loadEmbedded(Paths.sound('stressCutscene'));
 		FlxG.sound.list.add(cutsceneSnd);
-
+		
+		#if flxanimate
 		tankman.anim.addBySymbol('godEffingDamnIt', 'TANK TALK 3 P1 UNCUT', 24, false);
 		tankman.anim.addBySymbol('lookWhoItIs', 'TANK TALK 3 P2 UNCUT', 24, false);
 		tankman.anim.play('godEffingDamnIt', true);
+		#end
 
 		cutsceneHandler.onStart = function()
 		{
@@ -299,7 +313,8 @@ class Tank extends BaseStage
 		{
 			FlxTween.tween(camFollow, {x: 650, y: 300}, 1, {ease: FlxEase.sineOut});
 			FlxTween.tween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 2.25, {ease: FlxEase.quadInOut});
-
+			
+			#if flxanimate
 			pico.anim.play('dieBitch', true);
 			pico.anim.onComplete = function()
 			{
@@ -328,17 +343,20 @@ class Tank extends BaseStage
 					}
 				};
 			};
+			#end
 		});
 
 		cutsceneHandler.timer(17.5, function()
 		{
 			zoomBack();
 		});
-
+		
+		#if flxanimate
 		cutsceneHandler.timer(19.5, function()
 		{
 			tankman.anim.play('lookWhoItIs', true);
 		});
+		#end
 
 		cutsceneHandler.timer(20, function()
 		{

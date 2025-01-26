@@ -326,7 +326,7 @@ class ChartingState extends MusicBeatState
 		{
 			text = "Up/Down - Change Conductor's strum time
 			\nLeft/Right - Go to the previous/next section"
-			#if FLX_PITCH + "\nG - Reset Song Playback Rate" + #end
+			#if FLX_PITCH + "\nG - Reset Song Playback Rate" #end +
 			"\nHold Y to move 4x faster
 			\nHold H and touch on an arrow to select it
 			\nV/D - Zoom in/out
@@ -2439,7 +2439,8 @@ class ChartingState extends MusicBeatState
 			sound = vocals;
 		else if(FlxG.save.data.chart_waveformOppVoices)
 			sound = opponentVocals;
-		
+
+		#if !flash		
 		if (sound != null && sound._sound != null && sound._sound.__buffer != null) {
 			var bytes:Bytes = sound._sound.__buffer.data.toBytes();
 
@@ -2453,6 +2454,7 @@ class ChartingState extends MusicBeatState
 				Std.int(gridBG.height)
 			);
 		}
+		#end
 
 		// Draws
 		var gSize:Int = Std.int(GRID_SIZE * 8);

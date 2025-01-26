@@ -3,7 +3,7 @@ package shaders;
 import objects.Note;
 
 class RGBPalette {
-	public var shader(default, null):RGBPaletteShader = new RGBPaletteShader();
+	#if !flash public var shader(default, null):RGBPaletteShader = new RGBPaletteShader(); #end
 	public var r(default, set):FlxColor;
 	public var g(default, set):FlxColor;
 	public var b(default, set):FlxColor;
@@ -11,25 +11,25 @@ class RGBPalette {
 
 	private function set_r(color:FlxColor) {
 		r = color;
-		shader.r.value = [color.redFloat, color.greenFloat, color.blueFloat];
+		#if !flash shader.r.value = [color.redFloat, color.greenFloat, color.blueFloat]; #end
 		return color;
 	}
 
 	private function set_g(color:FlxColor) {
 		g = color;
-		shader.g.value = [color.redFloat, color.greenFloat, color.blueFloat];
+		#if !flash shader.g.value = [color.redFloat, color.greenFloat, color.blueFloat]; #end
 		return color;
 	}
 
 	private function set_b(color:FlxColor) {
 		b = color;
-		shader.b.value = [color.redFloat, color.greenFloat, color.blueFloat];
+		#if !flash shader.b.value = [color.redFloat, color.greenFloat, color.blueFloat]; #end
 		return color;
 	}
 	
 	private function set_mult(value:Float) {
 		mult = FlxMath.bound(value, 0, 1);
-		shader.mult.value = [mult];
+		#if !flash shader.mult.value = [mult]; #end
 		return mult;
 	}
 
@@ -59,7 +59,7 @@ class RGBShaderReference
 		parent = ref;
 		_owner = owner;
 		_original = ref;
-		owner.shader = ref.shader;
+		#if !flash owner.shader = ref.shader; #end
 
 		@:bypassAccessor
 		{
@@ -92,7 +92,7 @@ class RGBShaderReference
 	}
 	private function set_enabled(value:Bool)
 	{
-		_owner.shader = value ? parent.shader : null;
+		#if !flash _owner.shader = value ? parent.shader : null; #end
 		return (enabled = value);
 	}
 
@@ -109,12 +109,13 @@ class RGBShaderReference
 			parent.g = _original.g;
 			parent.b = _original.b;
 			parent.mult = _original.mult;
-			_owner.shader = parent.shader;
+			#if !flash _owner.shader = parent.shader; #end
 			//trace('created new shader');
 		}
 	}
 }
 
+#if !flash
 class RGBPaletteShader extends FlxShader {
 	@:glFragmentHeader('
 		#pragma header
@@ -154,3 +155,4 @@ class RGBPaletteShader extends FlxShader {
 		super();
 	}
 }
+#end

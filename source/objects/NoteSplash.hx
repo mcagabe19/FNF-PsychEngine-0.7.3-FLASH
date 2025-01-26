@@ -33,7 +33,7 @@ class NoteSplash extends FlxSprite
 		else skin = defaultNoteSplash + getSplashSkinPostfix();
 		
 		rgbShader = new PixelSplashShaderRef();
-		shader = rgbShader.shader;
+		#if !flash shader = rgbShader.shader; #end
 		precacheConfig(skin);
 		_configLoaded = skin;
 		scrollFactor.set();
@@ -203,7 +203,7 @@ class NoteSplash extends FlxSprite
 }
 
 class PixelSplashShaderRef {
-	public var shader:PixelSplashShader = new PixelSplashShader();
+	#if !flash public var shader:PixelSplashShader = new PixelSplashShader(); #end
 
 	public function copyValues(tempShader:RGBPalette)
 	{
@@ -211,6 +211,7 @@ class PixelSplashShaderRef {
 		if(tempShader != null)
 			enabled = true;
 
+		#if !flash
 		if(enabled)
 		{
 			for (i in 0...3)
@@ -222,22 +223,26 @@ class PixelSplashShaderRef {
 			shader.mult.value[0] = tempShader.shader.mult.value[0];
 		}
 		else shader.mult.value[0] = 0.0;
+		#end
 	}
 
 	public function new()
 	{
+		#if !flash
 		shader.r.value = [0, 0, 0];
 		shader.g.value = [0, 0, 0];
 		shader.b.value = [0, 0, 0];
 		shader.mult.value = [1];
+		#end
 
 		var pixel:Float = 1;
 		if(PlayState.isPixelStage) pixel = PlayState.daPixelZoom;
-		shader.uBlocksize.value = [pixel, pixel];
+		#if !flash shader.uBlocksize.value = [pixel, pixel]; #end
 		//trace('Created shader ' + Conductor.songPosition);
 	}
 }
 
+#if !flash
 class PixelSplashShader extends FlxShader
 {
 	@:glFragmentHeader('
@@ -284,3 +289,4 @@ class PixelSplashShader extends FlxShader
 		super();
 	}
 }
+#end

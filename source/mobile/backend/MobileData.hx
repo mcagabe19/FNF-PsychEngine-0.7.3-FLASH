@@ -44,7 +44,7 @@ class MobileData
 
 	public static function init()
 	{
-		save = new FlxSave();
+		/*save = new FlxSave();
 		save.bind('MobileControls', CoolUtil.getSavePath());
 
 		readDirectory(Paths.getSharedPath('mobile/DPadModes'), dpadModes);
@@ -55,7 +55,7 @@ class MobileData
 			readDirectory(Path.join([folder, 'DPadModes']), dpadModes);
 			readDirectory(Path.join([folder, 'ActionModes']), actionModes);
 		}
-		#end
+		#end*/
 
 		for (data in ExtraActions.createAll())
 			extraActions.set(data.getName(), data);

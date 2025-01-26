@@ -195,7 +195,7 @@ class TouchPad extends MobileInputManager implements IMobileControls
 		button.updateLabelPosition();
 
 		button.statusBrightness = [1, 0.8, 0.4];
-		button.statusIndicatorType = BRIGHTNESS;
+		button.statusIndicatorType = #if flash ALPHA #else BRIGHTNESS #end;
 		button.indicateStatus();
 
 		button.bounds.makeGraphic(Std.int(button.width - 50), Std.int(button.height - 50), FlxColor.TRANSPARENT);

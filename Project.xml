@@ -20,17 +20,17 @@
 	
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
-	<define name="MODS_ALLOWED" if="desktop || mobile" />
-	<define name="HSCRIPT_ALLOWED" if="desktop || mobile" />
-	<define name="LUA_ALLOWED" if="desktop || mobile" />
+	<define name="MODS_ALLOWED" if="desktop || mobile" unless="flash" />
+	<define name="HSCRIPT_ALLOWED" if="desktop || mobile" unless="flash" />
+	<define name="LUA_ALLOWED" if="desktop || mobile" unless="flash" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
-	<define name="DISCORD_ALLOWED" if="desktop" />
+	<!--<define name="DISCORD_ALLOWED" if="desktop" />-->
 	<define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/>
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
-	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits || hl || NOVIDEO || rpi"/> <!-- i'll keep this cuz it makes vscode think i don't use videos -->
+	<!--<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits || hl || NOVIDEO || rpi"/> <!-- i'll keep this cuz it makes vscode think i don't use videos -->-->
 
 	<section if="officialBuild">
-		<define name="TITLE_SCREEN_EASTER_EGG"/>
+		<define name="TITLE_SCREEN_EASTER_EGG" unless="flash" />
 	</section>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
@@ -62,16 +62,16 @@
 
 	<!-- Assets -->
 	<assets path="assets/fonts" />
-	<assets path="assets/shared"        exclude="*.ogg" if="web"/>
-	<assets path="assets/shared"        exclude="*.mp3" unless="web"/>
+	<assets path="assets/shared"        exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/shared"        exclude="*.mp3" unless="web || flash"/>
 	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED"/>
-	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web"/>
-	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/week_assets"   library="week_assets"   rename="assets" exclude="*.ogg" if="web"/>
-	<assets path="assets/week_assets"   library="week_assets"   rename="assets" exclude="*.mp3" unless="web"/>
+	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week_assets"   library="week_assets"   rename="assets" exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week_assets"   library="week_assets"   rename="assets" exclude="*.mp3" unless="web || flash"/>
 	<section if="TITLE_SCREEN_EASTER_EGG">
-		<assets path="assets/secrets" rename="assets/shared" exclude="*.ogg" if="web"/>
-		<assets path="assets/secrets" rename="assets/shared" exclude="*.mp3"  unless="web"/>
+		<assets path="assets/secrets" rename="assets/shared" exclude="*.ogg" if="web || flash"/>
+		<assets path="assets/secrets" rename="assets/shared" exclude="*.mp3"  unless="web || flash"/>
 	</section>
 
 	<library name="videos"        preload="true" if="VIDEOS_ALLOWED"/>
@@ -97,7 +97,7 @@
 	<haxelib name="SScript" if="HSCRIPT_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
-	<haxelib name="flxanimate"/>
+	<haxelib name="flxanimate" unless="flash" />
 	<!-- Mobile Specific-->
 	<haxelib name="extension-androidtools" if="android" />
 
@@ -106,7 +106,7 @@
 	<haxedef name="NO_PRECOMPILED_HEADERS" if="linux" />
 
 	<!-- Enables a terminal log prompt on debug builds -->
-	<haxelib name="hxcpp-debug-server" if="debug"/>
+	<haxelib name="hxcpp-debug-server" if="cpp debug"/>
 	<haxedef name="HXC_LIBVLC_LOGGING" if="VIDEOS_ALLOWED debug" />
 	
 	<!-- ______________________________ Haxedefines _____________________________ -->
@@ -164,7 +164,7 @@
 
 	<!--Avoid memory leaks with for loops in HScript-->
 	<haxedef name="loop_unroll_max_cost" value="25" />
-	<haxedef name="DISABLED_MACRO_SUPERLATIVE" if="android" />
+	<haxedef name="DISABLED_MACRO_SUPERLATIVE" if="android || linux" />
 
 	<!--Macro fixes-->
 	<haxeflag name="--macro" value="allowPackage('flash')" />

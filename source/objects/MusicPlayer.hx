@@ -166,6 +166,7 @@ class MusicPlayer extends FlxGroup
 
 			updateTimeTxt();
 		}
+		#if FLX_PITCH
 		if (instance.controls.UI_UP_P)
 		{
 			holdPitchTime = 0;
@@ -187,6 +188,7 @@ class MusicPlayer extends FlxGroup
 				setPlaybackRate();
 			}
 		}
+		#end
 		if (FreeplayState.vocals != null && FlxG.sound.music.time > 5)
 		{
 			var difference:Float = Math.abs(FlxG.sound.music.time - FreeplayState.vocals.time);
@@ -342,9 +344,11 @@ class MusicPlayer extends FlxGroup
 
 	function setPlaybackRate() 
 	{
+		#if FLX_PITCH
 		FlxG.sound.music.pitch = playbackRate;
 		if (FreeplayState.vocals != null)
 			FreeplayState.vocals.pitch = playbackRate;
+		#end
 	}
 
 	function get_playing():Bool 
