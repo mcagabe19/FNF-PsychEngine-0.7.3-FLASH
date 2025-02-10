@@ -444,7 +444,7 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 
 		#if !flash
 		if (statusIndicatorType == BRIGHTNESS && label != null && brightShader != null)
-			label.shader = brightShader;
+			_spriteLabel.shader = brightShader;
 		#end
 
 		return Value;
