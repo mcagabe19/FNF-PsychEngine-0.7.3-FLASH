@@ -521,7 +521,7 @@ class DialogueEditorState extends MusicBeatState
 		var data:String = haxe.Json.stringify(dialogueFile, "\t");
 		if (data.length > 0)
 		{
-			#if mobile
+			#if (sys && mobile)
 			StorageUtil.saveContent("dialogue.json", data);
 			#else
 			_file = new FileReference();

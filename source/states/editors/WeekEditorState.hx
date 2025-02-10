@@ -525,7 +525,7 @@ class WeekEditorState extends MusicBeatState
 		var data:String = haxe.Json.stringify(weekFile, "\t");
 		if (data.length > 0)
 		{
-			#if mobile
+			#if (sys && mobile)
 			StorageUtil.saveContent('$weekFileName.json', data);
 			#else
 			_file = new FileReference();

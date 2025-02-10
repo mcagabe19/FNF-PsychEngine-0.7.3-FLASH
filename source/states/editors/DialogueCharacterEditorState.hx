@@ -760,7 +760,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 			var splittedImage:Array<String> = imageInputText.text.trim().split('_');
 			var characterName:String = splittedImage[0].toLowerCase().replace(' ', '');
 
-			#if mobile
+			#if (sys && mobile)
 			StorageUtil.saveContent('$characterName.json', data);
 			#else
 			_file = new FileReference();

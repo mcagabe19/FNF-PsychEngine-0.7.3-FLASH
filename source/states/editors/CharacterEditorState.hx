@@ -1373,7 +1373,7 @@ class CharacterEditorState extends MusicBeatState
 
 		if (data.length > 0)
 		{
-			#if mobile
+			#if (sys && mobile)
 			StorageUtil.saveContent('$_char.json', data);
 			#else
 			_file = new FileReference();
